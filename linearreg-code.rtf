@@ -1,0 +1,50 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red191\green100\blue38;\red32\green32\blue32;\red153\green168\blue186;
+\red109\green109\blue109;\red88\green118\blue71;\red152\green54\blue29;\red86\green132\blue173;\red117\green114\blue185;
+}
+{\*\expandedcolortbl;;\csgenericrgb\c74902\c39216\c14902;\csgenericrgb\c12549\c12549\c12549;\csgenericrgb\c60000\c65882\c72941;
+\csgenericrgb\c42745\c42745\c42745;\csgenericrgb\c34510\c46275\c27843;\csgenericrgb\c59608\c21176\c11373;\csgenericrgb\c33725\c51765\c67843;\csgenericrgb\c45882\c44706\c72549;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf2 \cb3 import \cf4 tensorflow \cf2 as \cf4 tf\
+\cf2 import \cf4 numpy \cf2 as \cf4 np\
+\cf5 # declaring list of features\
+\cf4 features = [tf.contrib.layers.real_valued_column(\cf6 "X"\cf4 )]\
+data=np.loadtxt(\cf6 "/Users/omarahmad/Downloads/machine-learning-ex1/ex1/ex1data1.txt"\cf2 ,\cf7 dtype\cf4 =\cf6 "i"\cf2 ,\cf7 delimiter\cf4 =\cf6 ","\cf4 )\
+\
+\cf5 # creating a linear regression estimator\
+\cf4 estimator = tf.contrib.learn.LinearRegressor(\cf7 feature_columns\cf4 =features)\
+\
+\cf5 # training and test data\
+\cf4 train_X=data[:\cf2 ,\cf8 0\cf4 ]\
+train_y=data[:\cf2 ,\cf8 1\cf4 ]\
+\cf5 #test_X = np.asarray([6.83, 4.668, 8.9, 7.91, 5.7, 8.7, 3.1, 2.1])\
+#test_y = np.asarray([1.84, 2.273, 3.2, 2.831, 2.92, 3.24, 1.35, 1.03])\
+\
+\
+# function to feed dict of numpy arrays into the model for training\
+\cf4 input_fn = tf.contrib.learn.io.numpy_input_fn(\{\cf6 "X"\cf4 :train_X\}\cf2 , \cf4 train_y\cf2 ,\
+											 \cf7 batch_size\cf4 =\cf8 4\cf2 , \cf7 num_epochs\cf4 =\cf8 2000\cf4 )\
+\
+\cf5 # function to feed dict of numpy arrays into the model for testing\
+#test_input_fn = tf.contrib.learn.io.numpy_input_fn(\{"X":test_X\}, test_y)\
+\
+# fit training data into estimator\
+\cf4 estimator.fit(\cf7 input_fn\cf4 =input_fn)\
+\
+\cf5 # print value of weight and bias\
+\cf4 W = estimator.get_variable_value(\cf6 'linear/X/weight'\cf4 )[\cf8 0\cf4 ][\cf8 0\cf4 ]\
+b = estimator.get_variable_value(\cf6 'linear/bias_weight'\cf4 )[\cf8 0\cf4 ]\
+\cf9 print\cf4 (\cf6 "W:"\cf2 , \cf4 W\cf2 , \cf6 "\cf2 \\t\cf6 b:"\cf2 , \cf4 b)\
+\
+\cf5 # evaluating the final loss\
+\cf4 train_loss = estimator.evaluate(\cf7 input_fn\cf4 =input_fn)[\cf6 'loss'\cf4 ]\
+\cf5 #test_loss = estimator.evaluate(input_fn=test_input_fn)['loss']\
+\cf9 print\cf4 (\cf6 "Final training loss:"\cf2 , \cf4 train_loss)\
+\cf5 #print("Final testing loss:", test_loss)\
+\
+\
+}
